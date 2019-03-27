@@ -1,0 +1,14 @@
+{
+  "name": "server-kit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "contributors": [
+    "Brice Govin <brice.govin@ensta-bretagne.org>"
+  ],
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
