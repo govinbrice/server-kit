@@ -3,10 +3,11 @@ import * as express from 'express';
 import * as bodyParser from "body-parser"
 
 export interface GenericService {
-    method: "GET" | "POST" | "PUT" | "DELETE" | "STATIC" | "PAGE",
+    method: "GET" | "POST" | "PUT" | "DELETE" | "STATIC" | "HTML",
     endpoint: string,
     action?: (req: any, res: any) => any
-    path?: string
+    path?: string,
+    pages?: string[]
 }
 
 export class Server {
@@ -63,11 +64,17 @@ export class Server {
                 const staticPath = service.path ? service.path : "./"
                 this.expressServer.use(express.static(staticPath));
                 break;
-            case "PAGE":
-                const page = path.resolve(`.${service.endpoint}.html`)
-                serviceRoute.get((req: any, res: any) => {
-                    res.sendfile(page);
-                })
+            case "HTML":
+                if (service.pages) {
+                    const endpoint = service.endpoint
+                    service.pages.forEach((pageRoute) => {
+                        const route = endpoint + pageRoute;
+                        this.expressServer.get(route, (req: any, res: any) => {
+                            const page = path.resolve(`.${route}.html`);
+                            res.sendFile(page);
+                        })
+                    })
+                }
                 break;
             default:
                 break;
@@ -76,6 +83,10 @@ export class Server {
     }
 
     startServer() {
-        this.expressServer.listen(this.port, () => { console.log(`Server listening on port ${this.port}`) })
+        return this.expressServer.listen(this.port, () => { console.log(`Server listening on port ${this.port}`) })
+    }
+
+    close() {
+        this.expressServer.close()
     }
 }
