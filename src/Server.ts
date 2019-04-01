@@ -1,8 +1,9 @@
+import * as path from 'path';
 import * as express from 'express';
 import * as bodyParser from "body-parser"
 
 export interface GenericService {
-    method: "GET" | "POST" | "PUT" | "DELETE" | "STATIC",
+    method: "GET" | "POST" | "PUT" | "DELETE" | "STATIC" | "PAGE",
     endpoint: string,
     action?: (req: any, res: any) => any
     path?: string
@@ -59,8 +60,14 @@ export class Server {
                 serviceRoute.put(service.action)
                 break;
             case "STATIC":
-                const path = service.path ? service.path : "./"
-                this.expressServer.use(express.static(path));
+                const staticPath = service.path ? service.path : "./"
+                this.expressServer.use(express.static(staticPath));
+                break;
+            case "PAGE":
+                const page = path.resolve(`.${service.endpoint}.html`)
+                serviceRoute.get((req: any, res: any) => {
+                    res.sendfile(page);
+                })
                 break;
             default:
                 break;
