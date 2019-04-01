@@ -16,6 +16,9 @@
     }
   },
   "jest": {
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
     "testRegex": "/src/tests/(.*).test.(ts?)$",
     "moduleFileExtensions": [
       "ts",
