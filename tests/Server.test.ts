@@ -1,5 +1,6 @@
 import * as fs from "fs"
-import { Server, GenericService } from "../Server";
+import * as path from "path"
+import { Server, GenericService } from "../src/Server";
 import { todos, todo, modifyTodos, deleteTodo } from "./ServerServices";
 import { request } from "./ServerRequest";
 
@@ -32,7 +33,7 @@ const services: GenericService[] = [
     {
         endpoint: "/",
         method: "HTML",
-        pages: ["src/tests/data/page"]
+        pages: ["tests/data/page"]
     }
 ]
 const server = new Server(port, services)
@@ -116,8 +117,9 @@ test('providing delete service', () => {
 })
 
 test('providing static files', () => {
-    const staticFile = serverUrl + "/src/tests/data/object.json"
-    const expectedObject = JSON.parse(fs.readFileSync("./src/tests/data/object.json").toString())
+    const staticFile = serverUrl + "/tests/data/object.json"
+    const expectObjectPath = path.resolve(path.normalize("tests/data/object.json"))
+    const expectedObject = JSON.parse(fs.readFileSync(expectObjectPath).toString())
 
     expect.assertions(1);
     return request(staticFile, "GET", { query: {} })
@@ -132,8 +134,9 @@ test('providing static files', () => {
 })
 
 test('providing pages', () => {
-    const pagesRequest = serverUrl + "/src/tests/data/page"
-    const expectedPage = fs.readFileSync("./src/tests/data/page.html").toString()
+    const pagesRequest = serverUrl + "/tests/data/page"
+    const expectPagePath = path.resolve(path.normalize("tests/data/page.html"))
+    const expectedPage = fs.readFileSync(expectPagePath).toString()
 
     expect.assertions(1);
     return request(pagesRequest, "GET", {})

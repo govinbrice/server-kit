@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "build:dev": "webpack --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "compile": "tsc -p .",
+    "build": "yarn compile && node build.js"
   },
   "husky": {
     "hooks": {
@@ -20,7 +20,7 @@
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
-    "testRegex": "/src/tests/(.*).test.(ts?)$",
+    "testRegex": "tests/(.*).test.(ts?)$",
     "moduleFileExtensions": [
       "ts",
       "js",
@@ -46,8 +46,6 @@
     "jest": "^24.5.0",
     "node-fetch": "^2.3.0",
     "ts-jest": "^24.0.1",
-    "typescript": "^3.3.4000",
-    "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.7"
+    "typescript": "^3.3.4000"
   }
 }
