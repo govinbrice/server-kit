@@ -1,11 +1,12 @@
 import * as fs from "fs"
 import * as path from "path"
-import { Server, GenericService } from "../src/Server";
+import { Server, Services, WebServices, HTMLFileService, StaticDirectoryService } from "../src/Server";
 import { todos, todo, modifyTodos, deleteTodo } from "./ServerServices";
 import { request } from "./ServerRequest";
 
 const port = 3000
-const services: GenericService[] = [
+
+const webServices: WebServices[] = [
     {
         endpoint: "/todos",
         method: "GET",
@@ -26,15 +27,26 @@ const services: GenericService[] = [
         method: "DELETE",
         action: deleteTodo
     },
-    {
-        endpoint: "/",
-        method: "STATIC"
-    },
+]
+const htmlServices: HTMLFileService[] = [
     {
         endpoint: "/",
         method: "HTML",
         pages: ["tests/data/page"]
     }
+]
+
+const staticDirs: StaticDirectoryService[] = [
+    {
+        endpoint: "/",
+        path: "./",
+        method: "STATIC"
+    }
+]
+const services: Services = [
+    ...webServices,
+    ...htmlServices,
+    ...staticDirs
 ]
 const server = new Server(port, services)
 var toBeClosed: any = undefined;
