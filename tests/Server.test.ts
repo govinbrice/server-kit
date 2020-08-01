@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import * as path from "path"
 import { Server, Services, WebServices, HTMLFileService, StaticDirectoryService } from "../src/Server";
-import { todos, todo, modifyTodos, deleteTodo } from "./ServerServices";
+import { todos, todo, todoQuery, modifyTodos, deleteTodo } from "./ServerServices";
 import { request } from "./ServerRequest";
 
 const port = 3000
@@ -11,6 +11,11 @@ const webServices: WebServices[] = [
         endpoint: "/todos",
         method: "GET",
         action: todos
+    },
+    {
+        endpoint: "/query/todo",
+        method: "GET",
+        action: todoQuery
     },
     {
         endpoint: "/todo",
@@ -51,6 +56,9 @@ const services: Services = [
 const server = new Server(port, services)
 var toBeClosed: any = undefined;
 
+const serverUrl = 'http://localhost:3000'
+const serverApi = serverUrl + '/api'
+
 beforeAll(() => {
     toBeClosed = server.startServer()
 })
@@ -61,8 +69,7 @@ afterAll(() => {
     }
 })
 
-const serverUrl = 'http://localhost:3000'
-const serverApi = 'http://localhost:3000/api'
+
 
 test('providing get service', () => {
     const todosRequest = serverApi + "/todos"
@@ -73,6 +80,21 @@ test('providing get service', () => {
             const todos: any[] = response.todos;
             expect(todos.length).toEqual(2)
             expect(todos).toEqual(["todo1", "todo2"])
+        })
+        .catch((error: any) => {
+            console.error(error);
+            expect(error).toBeFalsy()
+        })
+})
+
+test('providing get service with query', () => {
+    const todoRequest = serverApi + "/query/todo"
+
+    expect.assertions(1);
+    return request(todoRequest, "GET", { query: { name: "todo1" } })
+        .then((response: any) => {
+            const todo: any[] = response.todo;
+            expect(todo).toEqual("todo1")
         })
         .catch((error: any) => {
             console.error(error);

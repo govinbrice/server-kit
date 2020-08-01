@@ -5,6 +5,13 @@ export function todos(req: any, res: any) {
     return res.json({ todos: todosList, type: "success" })
 }
 
+export function todoQuery(req: any, res: any) {
+    const todoQuery = req.query;
+
+    const todo = todosList.find((t) => t === todoQuery.name);
+    return res.json({ todo, type: "success" })
+}
+
 export function todo(req: any, res: any) {
     const todo = req.body.todo;
     const list = [...todosList, todo]
