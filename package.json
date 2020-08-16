@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "compile": "tsc -p .",
-    "build": "yarn compile && node build.js"
+    "build": "rm -rf dist && yarn compile && node build.js"
   },
   "husky": {
     "hooks": {
