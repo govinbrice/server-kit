@@ -36,6 +36,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "fs-extra": "^9.0.1",
+    "level": "^7.0.1",
+    "leveldown": "^6.1.0",
     "querystring": "^0.2.0",
     "wait-on": "^4.0.2"
   },
