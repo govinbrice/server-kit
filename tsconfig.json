@@ -15,7 +15,9 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
   },
   "compileOnSave": true,
   "awesomeTypescriptLoaderOption": {
