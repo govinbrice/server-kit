@@ -7,9 +7,12 @@
     "Brice Govin <brice.govin@ensta-bretagne.org>"
   ],
   "scripts": {
+    "clean": "rm -rf dist",
+    "buildDependencies": "node buildDependencies.js",
+    "compile": "yarn clean && ./node_modules/.bin/tsc -p . && yarn buildDependencies",
     "test": "jest",
-    "compile": "tsc -p .",
-    "build": "rm -rf dist && yarn compile && node build.js"
+    "postinstall": "yarn compile",
+    "package": "yarn compile && yarn buildDependencies"
   },
   "husky": {
     "hooks": {
@@ -32,6 +35,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "fs-extra": "^9.0.1",
     "querystring": "^0.2.0",
     "wait-on": "^4.0.2"
   },

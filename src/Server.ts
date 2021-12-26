@@ -1,32 +1,7 @@
 import * as path from 'path';
 import express = require('express');
 import * as bodyParser from "body-parser"
-
-interface GenericService {
-    method: string,
-    endpoint: string | RegExp,
-    action?: (req: any, res: any) => any
-    path?: string,
-    pages?: string[]
-}
-
-export type Services = GenericService[]
-
-export interface StaticDirectoryService extends GenericService {
-    method: "STATIC",
-    path: string
-}
-
-export interface HTMLFileService extends GenericService {
-    method: "HTML",
-    endpoint: string,
-    pages: string[]
-}
-
-export interface WebServices extends GenericService {
-    method: "GET" | "POST" | "PUT" | "DELETE",
-    action: (req: any, res: any) => any
-}
+import { GenericService } from './Services';
 
 export class Server {
 
