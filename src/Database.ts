@@ -45,6 +45,10 @@ export class Database {
 
     }
 
+    getAll(): any[] {
+        return Object.values(Object.values(this.db.data).flat());
+    }
+
 
     put(id: string, element: DatabaseObject, index: string): DatabaseObject {
         if (!this.db.data[index]) {
@@ -53,6 +57,16 @@ export class Database {
         this.db.data[index][id] = element;
         this.db.write();
         return element;
+    }
+
+    putAll(elements: DatabaseObject[], index: string): void {
+        if (!this.db.data[index]) {
+            this.db.data[index] = {};
+        }
+        elements.forEach((element) => {
+            this.db.data[index][element.id] = element;
+        });
+        this.db.write();
     }
 
     delete(id: string, index?: string): boolean {
